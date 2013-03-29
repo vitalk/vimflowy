@@ -1,72 +1,202 @@
-// TODO: support search functionality -- '/', type query, esc, n/N move you
-// between search terms?
-// TODO: add 'e', 'dd', others?
-//
+/**
+ * Vimflowy chrome extension.
+ *
+ * Simulate Vim keybindings on workflowy.
+ *
+ * @version: 0.1.1
+ * @author: Leila Zilles
+ * @contributor: Vital Kudzelka
+ */
+(function() {
+    /**
+     * The Vimflowy core
+     *
+     * @param {Boolean} debug Run on debug mode
+     */
+    function Vimflowy(debug) {
+        if (!(this instanceof Vimflowy)) {
+            return new Vimflowy(debug);
+        }
 
-var normalKeybindings = {
-    "j": commands.moveDown,
-    "k": commands.moveUp,
-    "h": commands.moveLeft,
-    "l": commands.moveRight,
+        // log all messages into console
+        this.debug = debug;
 
-    "w": commands.moveWordForward,
-    "b": commands.moveWordBackward,
+        // current extension version
+        this.version = 'unknown';
 
-    "x": commands.doBackspace,
+        // commands registry
+        this.commands = this.Commands();
 
-    "shift+o": commands.createNewBefore,
-    "o": commands.createNewAfter,
+        // holds all binded keys and associated handlers
+        this.keybindings = {};
 
-    "shift+i": commands.insertBeginning,
-    "shift+a": commands.insertEnd,
+        // editor textarea to bind keys to
+        this.editor = $(".editor > textarea");
 
-    "u": commands.doUndo,
-    "ctrl+r": commands.doRedo,
+        // current mode
+        this.mode = 'normal';
+    }
 
-    "i": enterInsertMode,
-    "a": enterInsertMode
-};
+    /**
+     * Alias to prototype
+     */
+    Vimflowy.fn = Vimflowy.prototype;
 
-var insertKeybindings = {
-    "esc": enterNormalMode,
+    /**
+     * Write log messages into console if on debug mode or swallow its
+     * otherwise.
+     */
+    Vimflowy.prototype.log = function() {
+        Array.prototype.unshift.call(arguments, '[vimflowy]');
+        if (window.console && this.debug) {
+            console.log.apply(console, arguments);
+        }
+    };
 
-    // TODO: this breaks tab closing (even more)!
-    "ctrl+w": commands.deleteWordBack,
-    "ctrl+u": commands.deleteItemBack
-};
+    /**
+     * Bind the key sequence to command execution.
+     *
+     * The actual command decorated to log messages to console on debug mode.
+     *
+     * @param {String} key The key to bind
+     * @param {Command} cmd The command to bind
+     * @param {Boolean} force Rebind already binded key
+     */
+    Vimflowy.prototype.bind = function(key, cmd, force) {
+        // unbind already binded command if force is set
+        if (this.keybindings.hasOwnProperty(key)) {
+            if (!force) {
+                this.log('Be patient, key', key, 'already binded, to avoid',
+                    'unexpected effects and memory leaks unbind it before',
+                    'or use force flag');
+                return;
+            }
+            this.unbind(key);
+        }
 
-var alwaysKeybindings = {
-    "alt+l": commands.zoomInFold,
-    "alt+h": commands.zoomOutFold,
+        // decorate command handler
+        var self = this;
+        function fn(e) {
+            self.log(key, 'has been pressed:', cmd.desc);
+            cmd.fn(e);
+        }
 
-    "alt+shift+l": commands.doIndent,
-    "alt+shift+h": commands.doDedent,
+        // register it (now possible to unbind decorated command handler)
+        this.keybindings[key] = fn;
 
-    "alt+shift+k": commands.doProjectUp,
-    "alt+shift+j": commands.doProjectDown
-};
+        // actually bind it
+        this.editor.each(function() {
+            $(this).bind('keydown', key, fn);
+        });
+    };
 
-// unbind and rebind so we can get esc key back
-$(".editor > textarea").unbind("keydown");
-$(".editor > textarea").addTextAreaEventHandlers();
+    /**
+     * Remove key binding from page
+     *
+     * @param {String} key The key to unbind
+     */
+    Vimflowy.prototype.unbind = function(key) {
+        // nothing to unbind
+        if (!this.keybindings.hasOwnProperty(key)) {
+            this.log('Nothing to unbind: key', key, 'doesn\'t binded');
+            return;
+        }
 
-// add some "vimflowy" movement keybindings
-$(".editor > textarea").addModalKeyboardShortcuts(alwaysKeybindings);
+        var fn = this.keybindings[key];
+        this.editor.each(function() {
+            $(this).unbind('keydown', fn);
+        });
 
-var blockAll = function (e) { e.preventDefault(); }
+        delete this.keybindings[key];
+    };
 
-function enterNormalMode () {
-    console.log('entering normal mode');
-    $(".editor > textarea").bind("keydown", blockAll);
-    $(".editor > textarea").addModalKeyboardShortcuts(normalKeybindings, insertKeybindings);
-};
+    /**
+     * Register new command and bind key to it if needed.
+     *
+     * @param {String} key The key to map
+     * @param {Function} fn The key handler
+     * @param {Array} modes On which modes bind key
+     * @param {String} desc The command description.
+     * @param {Boolean} noremap Disallow already binded keys to rebind
+     */
+    Vimflowy.prototype.map = function(key, fn, modes, desc, noremap) {
+        var cmd = this.Command(fn, desc);
 
-function enterInsertMode (e) {
-    e.preventDefault();
-    console.log('entering insert mode');
-    $(".editor > textarea").unbind("keydown", blockAll);
-    $(".editor > textarea").addModalKeyboardShortcuts(insertKeybindings, normalKeybindings);
-}
+        // disallow key rebinding by default
+        noremap = (typeof noremap === 'undefined') ? true : noremap;
 
-// start 'er up
-enterNormalMode();
+        // rebind key if needed
+        if (isContains(modes, this.mode)) {
+            this.bind(key, cmd, !noremap);
+        }
+
+        // add to registry
+        this.commands.map(key, cmd, modes);
+
+        // say it
+        this.log('Key', key, 'mapped to', desc);
+    };
+
+    /**
+     * Unregister command from registry.
+     *
+     * @param {String} key The key to unmap
+     * @param {Array|String} modes The modes to unmap
+     */
+    Vimflowy.prototype.unmap = function(key, modes) {
+        modes = (typeof modes === 'undefined') ? [] : toArray(modes);
+        if (isEmpty(modes)) {
+            this.log('Do you forget to explicitly set modes to unmap?');
+            return;
+        }
+
+        // unbind if binded
+        if (isContains(modes, this.mode)) {
+            this.unbind(key);
+        }
+
+        // remove from registry
+        this.commands.unmap(key, modes);
+
+        // say it
+        this.log('Key', key, 'successfully unmapped. The mapping may remain',
+            'defined for other modes where it applies.');
+    };
+
+    /**
+     * Convert object into array.
+     *
+     * @param {Object} obj The object to convert
+     * @return {Array} The array with object if not object is array
+     */
+    function toArray(obj) {
+        return (obj instanceof Array) ? obj : [obj];
+    }
+
+    /**
+     * Check contains array element or not
+     *
+     * @param {Array} array The array to check
+     * @param {Object} value The value to check
+     * @return {Boolean} Contains or not
+     */
+    function isContains(array, value) {
+        return array.indexOf(value) != -1;
+    }
+
+    /**
+     * Check array is empty
+     *
+     * @param {Array} array The array to check
+     * @return {Boolean} Is empty array?
+     */
+    function isEmpty(array) {
+        return array.length < 1;
+    }
+
+    var root = typeof exports !== 'undefined' && exports !== null ? exports : window;
+
+    // expose to the globals
+    root.Vimflowy = Vimflowy;
+
+}).call(this);
