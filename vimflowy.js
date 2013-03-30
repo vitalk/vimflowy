@@ -223,6 +223,9 @@
         return rv;
     }
 
+    // attach it to prototype for reuse
+    Vimflowy.fn.fetchFileContent = fetchFileContent;
+
     var root = typeof exports !== 'undefined' && exports !== null ? exports : window;
 
     // expose to the globals
