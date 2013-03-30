@@ -5,7 +5,8 @@ var scripts = [
     "jquery-simulate-ext/src/jquery.simulate.key-sequence.js",
     "unbind-esc-key-back.js",
     "vimflowy.js",
-    "commands.js"
+    "commands.js",
+    "keybindings.js"
     ];
 
 for (var i=0; i < scripts.length; i++) {
