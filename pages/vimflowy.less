@@ -1,0 +1,170 @@
+/*
+ * To avoid overwriting extension UI elements by default page styles used
+ * "vimflowy" namespace to all UI classes or IDs.
+ */
+
+// variables
+@background: #eee;
+@emphasis-color: #2f508e;
+@key-column-width: 6em;
+
+// default reset
+#vimflowy-help {
+    background: none;
+    color: black;
+    border: none;
+    box-shadow: none;
+    opacity: 1;
+    cursor: auto;
+    float: none;
+    font-size: inherit;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: normal;
+    letter-spacing: 0;
+
+    display: inline;
+    height: auto;
+    width: auto;
+    min-height: 0;
+    min-width: 0;
+    margin: 0;
+    position: static;
+    bottom: auto;
+    padding: 0;
+    left: auto;
+    right: auto;
+    top: auto;
+    line-height: 100%;
+    max-height: none;
+    max-width: none;
+    text-align: left;
+    text-decoration: none;
+    text-indent: 0;
+    text-shadow: none;
+    text-transform: none;
+    vertical-align: baseline;
+    white-space: normal;
+    z-index: 99999;
+}
+
+#vimflowy-help.vimflowy {
+    &-help {
+        position: fixed;
+        top: 50px;
+        max-height: 85%;
+        padding: 8px 12px;
+        overflow-y: auto;
+
+        border: solid 2px darken(@background, 17);
+        border-radius: .5em;
+        background: @background;
+        opacity: .95;
+        -webkit-box-shadow: rgba(0, 0, 0, 0.4) 0px 0px 6px;
+
+        line-height: 1em;
+        font-family: "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+
+        .center-block(640px);
+    }
+}
+
+#vimflowy-help .vimflowy {
+    &-header {
+        position: relative;
+        padding: .2em 0 .5em;
+
+        font-size: 20px;
+        h1 {
+            font-weight: normal;
+        }
+        em {
+            color: @emphasis-color;
+            font-style: normal;
+        }
+    }
+
+    &-close {
+        position: absolute;
+        top: 0;
+        right: 0;
+
+        &:hover {
+            text-decoration: none;
+        }
+    }
+
+    &-sections { .clearfix(); }
+
+    &-column {
+        float: left;
+        width: 50%;
+
+        font-size: 11px;
+
+        &-headline {
+            margin-left: @key-column-width + .5em;
+        }
+    }
+
+    &-mapping {
+        &-key {
+            float: left;
+            text-align: right;
+            text-wrap: nowrap;
+            width: @key-column-width;
+
+            font-weight: bold;
+            color: @emphasis-color;
+        }
+
+        &-desc {
+            &:before {
+                content: ':';
+                padding: 0 .2em;
+            }
+        }
+    }
+
+    &-footer {
+        margin-top: .9em;
+        padding: .9em 0 .2em;
+        border-top: solid 1px darken(@background, 13);
+
+        font-size: 10px;
+        text-rendering: optimizeLegibility;
+
+        &-line {
+            line-height: 1.5em;
+
+            a {
+                color: darken(blue, 7);
+                &:hover { text-decoration: underline; }
+            }
+        }
+        &-version {
+            float: right;
+        }
+    }
+}
+
+// center block
+.center-block(@width) {
+    position: absolute;
+    left: 50%;
+    width: @width;
+    margin-left: -@width/2;
+}
+
+// clearfix
+.clearfix {
+    *zoom: 1;
+    &:before,
+    &:after {
+        display: table;
+        content: '';
+    }
+    &:after {
+        clear: both;
+    }
+}

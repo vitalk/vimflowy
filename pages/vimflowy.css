@@ -1,0 +1,140 @@
+/*
+ * To avoid overwriting extension UI elements by default page styles used
+ * "vimflowy" namespace to all UI classes or IDs.
+ */
+#vimflowy-help {
+  background: none;
+  color: black;
+  border: none;
+  box-shadow: none;
+  opacity: 1;
+  cursor: auto;
+  float: none;
+  font-size: inherit;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  letter-spacing: 0;
+  display: inline;
+  height: auto;
+  width: auto;
+  min-height: 0;
+  min-width: 0;
+  margin: 0;
+  position: static;
+  bottom: auto;
+  padding: 0;
+  left: auto;
+  right: auto;
+  top: auto;
+  line-height: 100%;
+  max-height: none;
+  max-width: none;
+  text-align: left;
+  text-decoration: none;
+  text-indent: 0;
+  text-shadow: none;
+  text-transform: none;
+  vertical-align: baseline;
+  white-space: normal;
+  z-index: 99999;
+}
+#vimflowy-help.vimflowy-help {
+  position: fixed;
+  top: 50px;
+  max-height: 85%;
+  padding: 8px 12px;
+  overflow-y: auto;
+  border: solid 2px #c3c3c3;
+  border-radius: .5em;
+  background: #eeeeee;
+  opacity: .95;
+  -webkit-box-shadow: rgba(0, 0, 0, 0.4) 0px 0px 6px;
+  line-height: 1em;
+  font-family: "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+  position: absolute;
+  left: 50%;
+  width: 640px;
+  margin-left: -320px;
+}
+#vimflowy-help .vimflowy-header {
+  position: relative;
+  padding: .2em 0 .5em;
+  font-size: 20px;
+}
+#vimflowy-help .vimflowy-header h1 {
+  font-weight: normal;
+}
+#vimflowy-help .vimflowy-header em {
+  color: #2f508e;
+  font-style: normal;
+}
+#vimflowy-help .vimflowy-close {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+#vimflowy-help .vimflowy-close:hover {
+  text-decoration: none;
+}
+#vimflowy-help .vimflowy-sections {
+  *zoom: 1;
+}
+#vimflowy-help .vimflowy-sections:before,
+#vimflowy-help .vimflowy-sections:after {
+  display: table;
+  content: '';
+}
+#vimflowy-help .vimflowy-sections:after {
+  clear: both;
+}
+#vimflowy-help .vimflowy-column {
+  float: left;
+  width: 50%;
+  font-size: 11px;
+}
+#vimflowy-help .vimflowy-column-headline {
+  margin-left: 6.5em;
+}
+#vimflowy-help .vimflowy-mapping-key {
+  float: left;
+  text-align: right;
+  text-wrap: nowrap;
+  width: 6em;
+  font-weight: bold;
+  color: #2f508e;
+}
+#vimflowy-help .vimflowy-mapping-desc:before {
+  content: ':';
+  padding: 0 .2em;
+}
+#vimflowy-help .vimflowy-footer {
+  margin-top: .9em;
+  padding: .9em 0 .2em;
+  border-top: solid 1px #cdcdcd;
+  font-size: 10px;
+  text-rendering: optimizeLegibility;
+}
+#vimflowy-help .vimflowy-footer-line {
+  line-height: 1.5em;
+}
+#vimflowy-help .vimflowy-footer-line a {
+  color: #0000db;
+}
+#vimflowy-help .vimflowy-footer-line a:hover {
+  text-decoration: underline;
+}
+#vimflowy-help .vimflowy-footer-version {
+  float: right;
+}
+.clearfix {
+  *zoom: 1;
+}
+.clearfix:before,
+.clearfix:after {
+  display: table;
+  content: '';
+}
+.clearfix:after {
+  clear: both;
+}
