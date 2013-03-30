@@ -4,3 +4,6 @@
 [submodule "jquery-simulate-ext"]
 	path = jquery-simulate-ext
 	url = https://github.com/j-ulrich/jquery-simulate-ext.git
+[submodule "mustache.js"]
+	path = mustache.js
+	url = https://github.com/janl/mustache.js

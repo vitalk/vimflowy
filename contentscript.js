@@ -3,10 +3,12 @@ var scripts = [
     "jquery-simulate-ext/libs/jquery.simulate.js",
     "jquery-simulate-ext/src/jquery.simulate.ext.js",
     "jquery-simulate-ext/src/jquery.simulate.key-sequence.js",
+    "mustache.js/mustache.js",
     "unbind-esc-key-back.js",
     "vimflowy.js",
     "commands.js",
-    "keybindings.js"
+    "keybindings.js",
+    "help-page.js"
     ];
 
 for (var i=0; i < scripts.length; i++) {

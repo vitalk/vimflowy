@@ -1,0 +1,31 @@
+<article id="vimflowy-help" class="vimflowy-help">
+    <header class="vimflowy-header">
+        <h1><em>Vim</em>flowy Help</h1>
+        <a href="#" class="vimflowy-close">×</a>
+    </header>
+    <div class="vimflowy-sections">
+        {{# sections }}
+        <section class="vimflowy-column">
+            <h2 class="vimflowy-column-headline">{{ headline }}</h2>
+            {{# mappings }}
+            <dl class="vimflowy-mapping">
+                <dt class="vimflowy-mapping-key">{{ key }}</dt>
+                <dd class="vimflowy-mapping-desc">{{ desc }}</dd>
+            </dl>
+            {{/ mappings }}
+            {{^ mappings }}
+            <div>No key mappings available.</div>
+            {{/ mappings }}
+        </section>
+        {{/ sections }}
+    </div>
+    <footer class="vimflowy-footer">
+        <div class="vimflowy-footer-line">
+            Enjoying Vimflowy? <a href="https://chrome.google.com/webstore/detail/vimflowy/hihmffimpfdbkgpjfgmmgaleaejdidih/reviews" class="vimflowy-footer-link">Give us a feedback</a>.
+            <div class="vimflowy-footer-version">Version: {{ version }}</div>
+        </div>
+        <div class="vimflowy-footer-line">
+            Found a bug? <a href="https://github.com/vitalk/vimflowy/issues" class="vimflowy-footer-link">Report it here</a>.
+        </div>
+    </footer>
+</article>

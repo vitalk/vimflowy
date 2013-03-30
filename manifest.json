@@ -1,6 +1,6 @@
 {
   "name": "Vimflowy",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "manifest_version": 2,
 
   "description": "Vim shortcuts for Workflowy",
@@ -8,14 +8,18 @@
 
   "content_scripts": [ { "matches": ["https://workflowy.com/*"], "js": ["contentscript.js"] } ],
 
-  "web_accessible_resources": [ 
+  "web_accessible_resources": [
+    "pages/help.html",
     "manifest.json",
     "jquery-simulate-ext/libs/bililiteRange.js", 
     "jquery-simulate-ext/libs/jquery.simulate.js", 
     "jquery-simulate-ext/src/jquery.simulate.ext.js", 
     "jquery-simulate-ext/src/jquery.simulate.key-sequence.js", 
+    "mustache.js/mustache.js",
     "unbind-esc-key-back.js",
     "vimflowy.js",
     "commands.js",
-    "keybindings.js" ]
+    "keybindings.js",
+    "help-page.js"
+  ]
 }
