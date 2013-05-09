@@ -49,6 +49,24 @@ Vimflowy also adds some extra key bindings for common Workflowy tasks that work 
 * `<Alt><Shift>k`: Move current item up
 * `<Alt><Shift>j`: Move current item down
 
+### Custom keybindings ###
+
+Actually there is no handy way to remap keys, because at now extension does not
+have own options page. But if you are developer, you may remap or unmap any of
+the default keybindings through chrome console. All your mappings immediately
+appear at the help page (show on `?` key).
+
+Example of API usage:
+
+```js
+vimflowy.map('h', function() { console.log('say hello') }, 'normal', 'say hello', noremap=false)
+> Key h mapped to say hello
+vimflowy.unmap('h')
+> Do you forget to explicitly set modes to unmap?
+vimflowy.unmap('h', 'normal')
+> Key h successfully unmapped. The mapping may remain defined for other modes where it applies.
+```
+
 Usage tips
 ----------
 
