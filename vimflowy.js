@@ -3,7 +3,6 @@
  *
  * Simulate Vim keybindings on workflowy.
  *
- * @version: 0.1.1
  * @author: Leila Zilles
  * @contributor: Vital Kudzelka
  */
