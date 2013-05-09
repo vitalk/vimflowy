@@ -1,8 +1,8 @@
 var scripts = [ 
-    "jquery-simulate-ext/libs/bililiteRange.js",
-    "jquery-simulate-ext/libs/jquery.simulate.js",
-    "jquery-simulate-ext/src/jquery.simulate.ext.js",
-    "jquery-simulate-ext/src/jquery.simulate.key-sequence.js",
+    "vendor/jquery-simulate-ext/libs/bililiteRange.js",
+    "vendor/jquery-simulate-ext/libs/jquery.simulate.js",
+    "vendor/jquery-simulate-ext/src/jquery.simulate.ext.js",
+    "vendor/jquery-simulate-ext/src/jquery.simulate.key-sequence.js",
     "vendor/mustache.js/mustache.js",
     "unbind-esc-key-back.js",
     "vimflowy.js",
