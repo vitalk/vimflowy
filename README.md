@@ -8,6 +8,10 @@ If you like Vimflowy, please let me know! I'm curious to see how "niche" this ac
 Keybindings
 -----------
 
+To view all mapped keybindings use `?` key.
+
+![Screen shot](https://github.com/vitalk/vimflowy/raw/master/vimflowy-help.png)
+
 ### Normal mode ###
 
 * Movement
