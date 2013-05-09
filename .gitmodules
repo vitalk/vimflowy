@@ -7,3 +7,6 @@
 [submodule "mustache.js"]
 	path = mustache.js
 	url = https://github.com/janl/mustache.js
+[submodule "vendor/mustache.js"]
+	path = vendor/mustache.js
+	url = https://github.com/janl/mustache.js
