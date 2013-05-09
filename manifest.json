@@ -1,6 +1,6 @@
 {
   "name": "Vimflowy",
-  "version": "0.2.8",
+  "version": "0.2.9",
   "manifest_version": 2,
 
   "description": "Vim shortcuts for Workflowy",
