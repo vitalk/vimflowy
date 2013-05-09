@@ -3,7 +3,7 @@
 #
 LESSOBJS = $(shell pwd)/pages/vimflowy.less
 CSSOBJS = $(LESSOBJS:.less=.css)
-LESSC = 'which lessc'
+LESSC = $(which lessc)
 
 
 .PHONY: build
