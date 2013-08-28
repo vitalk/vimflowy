@@ -35,7 +35,7 @@
         this.editor = $(".editor > textarea");
 
         // current mode
-        this.mode = 'normal';
+        this.whereami = null;
     }
 
     /**
@@ -127,7 +127,7 @@
         noremap = (typeof noremap === 'undefined') ? true : noremap;
 
         // rebind key if needed
-        if (isContains(modes, this.mode)) {
+        if (isContains(modes, this.whereami)) {
             this.bind(key, cmd, !noremap);
         }
 
@@ -152,7 +152,7 @@
         }
 
         // unbind if binded
-        if (isContains(modes, this.mode)) {
+        if (isContains(modes, this.whereami)) {
             this.unbind(key);
         }
 
