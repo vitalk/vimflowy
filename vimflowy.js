@@ -165,6 +165,54 @@
     };
 
     /**
+     * Switch to specified mode
+     *
+     * @param {String} mode The mode name to go
+     */
+    Vimflowy.prototype.mode = function(mode) {
+        if (this.whereami === mode) return
+
+        if (!this.commands.modes.hasOwnProperty(mode)) {
+            this.log('Mode', '[' + mode + ']', 'does not exists, be patient!');
+            return
+        }
+
+        this.whereami = mode;
+
+        if (mode === 'normal') {
+            this.editor.bind('keydown', blockAll);
+        } else if (mode === 'insert') {
+            this.editor.unbind('keydown', blockAll);
+        }
+
+        // unbind bound keys
+        for (var key in this.keybindings) {
+            if (this.keybindings.hasOwnProperty(key)) {
+                this.unbind(key);
+            }
+        }
+
+        // add a new bindings
+        var keys = this.commands.modes[mode];
+        for (key in keys) {
+            if (keys.hasOwnProperty(key)) {
+                this.bind(key, keys[key]);
+            }
+        }
+
+        this.log('Now you are in the', '[' + mode + ']', 'mode, congrats!')
+    };
+
+    /*
+     * Block all default events.
+     *
+     * @param {Event} e The fired event
+     */
+    function blockAll (e) {
+        e.preventDefault();
+    }
+
+    /**
      * Convert object into array.
      *
      * @param {Object} obj The object to convert
