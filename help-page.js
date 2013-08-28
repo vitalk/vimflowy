@@ -31,9 +31,13 @@
         if (!this.shown) {
             this.shown = true;
 
-            // generate help sections
-            var availableCommands = vimflowy.commands,
-                sections = [];
+            // generate help sections only for insert and normal mode hotkeys
+            var sections = [],
+                availableCommands = {
+                  'normal': vimflowy.commands.modes.normal,
+                  'insert': vimflowy.commands.modes.insert
+                };
+
             for (var mode in availableCommands) {
                 if (availableCommands.hasOwnProperty(mode) &&
                     typeof availableCommands[mode] !== 'function') {

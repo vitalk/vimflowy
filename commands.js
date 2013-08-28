@@ -26,8 +26,7 @@
         if (!(this instanceof Commands)) {
             return new Commands();
         }
-        this.normal = {};
-        this.insert = {};
+        this.modes = {};
     }
 
     /**
@@ -41,31 +40,33 @@
         modes = (typeof modes === 'undefined') ? ['normal', 'insert'] : toArray(modes);
 
         for (var i = modes.length - 1; i >= 0; i--) {
-            switch (modes[i]) {
-                case 'normal': this.nmap(key, cmd); break;
-                case 'insert': this.imap(key, cmd); break;
-            }
+            var mode = modes[i];
+
+            // create a new mode if needed
+            if (!this.modes.hasOwnProperty(mode)) this.modes[mode] = {}
+
+            this.modes[mode][key] = cmd;
         }
     };
 
     /**
-     * Map command to normal mode
+     * Alias to map command to normal mode
      *
      * @param {String} key The key to map
      * @param {Command} cmd The command
      */
     Commands.prototype.nmap = function(key, cmd) {
-        this.normal[key] = cmd;
+        this.map(key, cmd, 'normal')
     };
 
     /**
-     * Map command to insert mode
+     * Alias to map command to insert mode
      *
      * @param {String} key The key to map
      * @param {Command} cmd The command
      */
     Commands.prototype.imap = function(key, cmd) {
-        this.insert[key] = cmd;
+        this.map(key, cmd, 'insert')
     };
 
     /**
@@ -80,33 +81,29 @@
     Commands.prototype.unmap = function(key, modes) {
         modes = toArray(modes);
         for (var i = modes.length - 1; i >= 0; i--) {
-            switch (modes[i]) {
-                case 'normal': this.nunmap(key); break;
-                case 'insert': this.iunmap(key); break;
+            var mode = modes[i];
+            if (this.modes.hasOwnProperty(mode) && this.modes[mode].hasOwnProperty(key)) {
+                delete this.modes[mode][key]
             }
         }
     };
 
     /**
-     * Unmap command from the normal mode
+     * Alias to unmap command from the normal mode
      *
      * @param {String} key The key to unmap
      */
     Commands.prototype.nunmap = function(key) {
-        if (this.normal.hasOwnProperty(key)) {
-            delete this.normal[key];
-        }
+        this.unmap(key, 'normal')
     };
 
     /**
-     * Unmap command from the insert mode
+     * Alias to unmap command from the insert mode
      *
      * @param {String} key The key to unmap
      */
     Commands.prototype.iunmap = function(key) {
-        if (this.insert.hasOwnProperty(key)) {
-            delete this.insert[key];
-        }
+        this.unmap(key, 'insert')
     };
 
     /**
