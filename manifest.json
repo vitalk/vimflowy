@@ -20,7 +20,6 @@
     "vendor/jquery-simulate-ext/src/jquery.simulate.ext.js",
     "vendor/jquery-simulate-ext/src/jquery.simulate.key-sequence.js",
     "vendor/mustache.js/mustache.js",
-    "unbind-esc-key-back.js",
     "vimflowy.js",
     "commands.js",
     "keybindings.js",
