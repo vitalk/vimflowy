@@ -19,7 +19,7 @@
     "vendor/jquery-simulate-ext/libs/jquery.simulate.js",
     "vendor/jquery-simulate-ext/src/jquery.simulate.ext.js",
     "vendor/jquery-simulate-ext/src/jquery.simulate.key-sequence.js",
-    "vendor/mustache.js/mustache.js",
+    "vendor/mustache/mustache.js",
     "vimflowy.js",
     "commands.js",
     "keybindings.js",

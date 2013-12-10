@@ -1,0 +1,25 @@
+{
+  "name": "vimflowy",
+  "main": "main.js",
+  "version": "0.3.0",
+  "homepage": "https://github.com/vitalk/vimflowy",
+  "authors": [
+    "Vital Kudzelka <vital.kudzelka@gmail.com>"
+  ],
+  "description": "Vim shortcuts for Workflowy",
+  "keywords": [
+    "vim",
+    "workflowy"
+  ],
+  "license": "MIT",
+  "private": true,
+  "devDependencies": {
+    "mustache": "~0.7.3",
+    "jquery-simulate-ext": "~1.2.0"
+  },
+  "ignore": [
+    "**/.*",
+    "vendor",
+    "tests"
+  ]
+}

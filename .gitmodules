@@ -1,6 +1,0 @@
-[submodule "vendor/mustache.js"]
-	path = vendor/mustache.js
-	url = https://github.com/janl/mustache.js
-[submodule "vendor/jquery-simulate-ext"]
-	path = vendor/jquery-simulate-ext
-	url = https://github.com/j-ulrich/jquery-simulate-ext
