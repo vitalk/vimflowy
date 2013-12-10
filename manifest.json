@@ -21,6 +21,7 @@
     "vendor/jquery-simulate-ext/src/jquery.simulate.key-sequence.js",
     "vendor/mustache/mustache.js",
     "vimflowy.js",
+    "vendor/mousetrap/mousetrap.js",
     "commands.js",
     "keybindings.js",
     "help-page.js"

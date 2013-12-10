@@ -7,6 +7,9 @@
  * @contributor: Vital Kudzelka
  */
 (function() {
+    // Pass all keydown events into handler
+    Mousetrap.stopCallback = function() { return false; }
+
     /**
      * The Vimflowy core
      *
@@ -30,9 +33,6 @@
 
         // holds all binded keys and associated handlers
         this.keybindings = {};
-
-        // editor textarea to bind keys to
-        this.editor = $(".editor > textarea");
 
         // current mode
         this.whereami = null;
@@ -79,16 +79,14 @@
         var self = this;
         function fn(e) {
             self.log(key, 'has been pressed:', cmd.desc);
-            cmd.fn(e);
+            return cmd.fn(e);
         }
 
         // register it (now possible to unbind decorated command handler)
         this.keybindings[key] = fn;
 
         // actually bind it
-        this.editor.each(function() {
-            $(this).bind('keydown', key, fn);
-        });
+        Mousetrap.bind(key, fn);
     };
 
     /**
@@ -104,10 +102,8 @@
         }
 
         var fn = this.keybindings[key];
-        this.editor.each(function() {
-            $(this).unbind('keydown', fn);
-        });
 
+        Mousetrap.unbind(key);
         delete this.keybindings[key];
     };
 
@@ -179,12 +175,6 @@
 
         this.whereami = mode;
 
-        if (mode === 'normal') {
-            this.editor.bind('keydown', blockAll);
-        } else if (mode === 'insert') {
-            this.editor.unbind('keydown', blockAll);
-        }
-
         // unbind bound keys
         for (var key in this.keybindings) {
             if (this.keybindings.hasOwnProperty(key)) {
@@ -202,15 +192,6 @@
 
         this.log('Now you are in the', '[' + mode + ']', 'mode, congrats!')
     };
-
-    /*
-     * Block all default events.
-     *
-     * @param {Event} e The fired event
-     */
-    function blockAll (e) {
-        e.preventDefault();
-    }
 
     /**
      * Convert object into array.
