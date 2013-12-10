@@ -6,7 +6,23 @@
  * @author: Leila Zilles
  * @contributor: Vital Kudzelka
  */
-(function() {
+define([
+    'util/has',
+    'util/fetch',
+    'util/array/isempty',
+    'util/array/iscontains',
+    'command',
+    'commands',
+    'mousetrap'
+  ], function(
+    has,
+    fetch,
+    isEmpty,
+    isContains,
+    Command,
+    Commands,
+    Mousetrap) {
+
     // Pass all keydown events into handler
     Mousetrap.stopCallback = function() { return false; }
 
@@ -25,11 +41,11 @@
 
         // current extension version
         this.version = (function() {
-            return JSON.parse(fetchFileContent('manifest.json') || '{"version":"unknown"}').version;
+            return JSON.parse(fetch('manifest.json') || '{"version":"unknown"}').version;
         }());
 
         // commands registry
-        this.commands = this.Commands();
+        this.commands = Commands();
 
         // holds all binded keys and associated handlers
         this.keybindings = {};
@@ -37,11 +53,6 @@
         // current mode
         this.whereami = null;
     }
-
-    /**
-     * Alias to prototype
-     */
-    Vimflowy.fn = Vimflowy.prototype;
 
     /**
      * Write log messages into console if on debug mode or swallow its
@@ -65,7 +76,7 @@
      */
     Vimflowy.prototype.bind = function(key, cmd, force) {
         // unbind already binded command if force is set
-        if (this.keybindings.hasOwnProperty(key)) {
+        if (has(this.keybindings, key)) {
             if (!force) {
                 this.log('Be patient, key', key, 'already binded, to avoid',
                     'unexpected effects and memory leaks unbind it before',
@@ -77,7 +88,14 @@
 
         // decorate command handler
         var self = this;
+
+        // Decorate original command handler to
+        //
+        // 1. Prevent default events for each command, so we don't insert
+        //    pressed key each time the event has been fired
+        // 2. Log debug info into console
         function fn(e) {
+            e.preventDefault();
             self.log(key, 'has been pressed:', cmd.desc);
             return cmd.fn(e);
         }
@@ -96,7 +114,7 @@
      */
     Vimflowy.prototype.unbind = function(key) {
         // nothing to unbind
-        if (!this.keybindings.hasOwnProperty(key)) {
+        if (!has(this.keybindings, key)) {
             this.log('Nothing to unbind: key', key, 'doesn\'t binded');
             return;
         }
@@ -117,7 +135,7 @@
      * @param {Boolean} noremap Disallow already binded keys to rebind
      */
     Vimflowy.prototype.map = function(key, fn, modes, desc, noremap) {
-        var cmd = this.Command(fn, desc);
+        var cmd = Command(fn, desc);
 
         // disallow key rebinding by default
         noremap = (typeof noremap === 'undefined') ? true : noremap;
@@ -168,7 +186,7 @@
     Vimflowy.prototype.mode = function(mode) {
         if (this.whereami === mode) return
 
-        if (!this.commands.modes.hasOwnProperty(mode)) {
+        if (!has(this.commands.modes, mode)) {
             this.log('Mode', '[' + mode + ']', 'does not exists, be patient!');
             return
         }
@@ -177,7 +195,7 @@
 
         // unbind bound keys
         for (var key in this.keybindings) {
-            if (this.keybindings.hasOwnProperty(key)) {
+            if (has(this.keybindings, key)) {
                 this.unbind(key);
             }
         }
@@ -185,7 +203,7 @@
         // add a new bindings
         var keys = this.commands.modes[mode];
         for (key in keys) {
-            if (keys.hasOwnProperty(key)) {
+            if (has(keys, key)) {
                 this.bind(key, keys[key]);
             }
         }
@@ -203,60 +221,6 @@
         return (obj instanceof Array) ? obj : [obj];
     }
 
-    /**
-     * Check contains array element or not
-     *
-     * @param {Array} array The array to check
-     * @param {Object} value The value to check
-     * @return {Boolean} Contains or not
-     */
-    function isContains(array, value) {
-        return array.indexOf(value) != -1;
-    }
+    return Vimflowy();
 
-    /**
-     * Check array is empty
-     *
-     * @param {Array} array The array to check
-     * @return {Boolean} Is empty array?
-     */
-    function isEmpty(array) {
-        return array.length < 1;
-    }
-
-    /**
-     * Fetch content of the extension resource file
-     *
-     * @param {String} filename The file name to fetch
-     * @return {String} Response text
-     */
-    function fetchFileContent(filename) {
-        var rv,
-            xhr = new XMLHttpRequest();
-
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState == 4) {
-                rv = xhr.responseText;
-            }
-        };
-        var url = chrome.extension.getURL(filename);
-        xhr.open('GET', url, false);
-
-        try {
-            xhr.send(null);
-        } catch(e) {
-            Vimflowy.prototype.log('couldn\'t load', filename);
-        }
-
-        return rv;
-    }
-
-    // attach it to prototype for reuse
-    Vimflowy.fn.fetchFileContent = fetchFileContent;
-
-    var root = typeof exports !== 'undefined' && exports !== null ? exports : window;
-
-    // expose to the globals
-    root.Vimflowy = Vimflowy;
-
-}).call(this);
+});

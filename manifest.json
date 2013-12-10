@@ -15,15 +15,28 @@
   "web_accessible_resources": [
     "pages/help.html",
     "manifest.json",
+    "vendor/requirejs/require.js",
     "vendor/jquery-simulate-ext/libs/bililiteRange.js",
     "vendor/jquery-simulate-ext/libs/jquery.simulate.js",
     "vendor/jquery-simulate-ext/src/jquery.simulate.ext.js",
     "vendor/jquery-simulate-ext/src/jquery.simulate.key-sequence.js",
-    "vendor/mustache/mustache.js",
-    "vimflowy.js",
     "vendor/mousetrap/mousetrap.js",
+    "vendor/mustache/mustache.js",
+    "ext/insert.js",
+    "ext/normal.js",
+    "ext/remove.js",
+    "ext/change.js",
+    "ext/fold.js",
+    "ext/move.js",
+    "ext/help.js",
+    "util/has.js",
+    "util/fetch.js",
+    "util/capitalize.js",
+    "util/array/isempty.js",
+    "util/array/iscontains.js",
+    "vimflowy.js",
     "commands.js",
-    "keybindings.js",
-    "help-page.js"
+    "command.js",
+    "main.js"
   ]
 }
