@@ -13,7 +13,7 @@ define([
     /**
      * Create help page
      */
-    function HelpPage() {
+    function Help() {
         // help dialog is shown
         this.shown = false;
 
@@ -27,7 +27,7 @@ define([
     /**
      * Show help page. All key bindings rendered at runtime.
      */
-    HelpPage.prototype.show = function() {
+    Help.prototype.show = function() {
         if (!this.shown) {
             this.shown = true;
 
@@ -65,7 +65,7 @@ define([
     /**
      * Hide help page. Actually remove it from page.
      */
-    HelpPage.prototype.hide = function() {
+    Help.prototype.hide = function() {
         if (this.shown) {
             this.shown = false;
 
@@ -81,7 +81,7 @@ define([
     /**
      * Toggle help page state.
      */
-    HelpPage.prototype.toggle = function() {
+    Help.prototype.toggle = function() {
         return (this.shown) ? this.hide() : this.show();
     };
 
@@ -110,7 +110,7 @@ define([
     }
 
     // Create a runtime help and related mappings
-    var help = new HelpPage;
+    var help = new Help;
 
     // Bind keys
     vimflowy.map('?', function() { help.toggle(); }, 'normal', 'show help popup')
