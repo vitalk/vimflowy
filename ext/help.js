@@ -31,6 +31,9 @@ define([
         if (!this.shown) {
             this.shown = true;
 
+            // Duplicate help popup in browser console
+            this.console();
+
             // generate help sections only for insert and normal mode hotkeys
             var sections = [],
                 availableCommands = {
