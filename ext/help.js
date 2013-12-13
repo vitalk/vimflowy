@@ -63,6 +63,27 @@ define([
     };
 
     /**
+     * Show help into browser console
+     */
+    Help.prototype.console = function() {
+      var mode, key, keys,
+          modes = vimflowy.commands.modes;
+
+      for (var mode in modes) {
+        if (has(modes, mode)) {
+          keys = modes[mode];
+          console.group(generateHeadline(mode));
+          for (key in keys) {
+            if (has(keys, key)) {
+              vimflowy.log('Key', key, 'mapped to', keys[key].desc);
+            }
+          }
+          console.groupEnd();
+        }
+      }
+    };
+
+    /**
      * Hide help page. Actually remove it from page.
      */
     Help.prototype.hide = function() {
