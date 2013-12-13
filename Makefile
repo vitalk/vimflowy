@@ -6,7 +6,11 @@ CSSOBJS = $(LESSOBJS:.less=.css)
 LESSC = $(which lessc)
 
 
-.PHONY: build
+.PHONY: build install
+
+
+install:
+	@bower install
 
 
 #
