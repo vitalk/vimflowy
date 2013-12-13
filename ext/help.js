@@ -2,13 +2,13 @@
  * Add help page to Vimflowy.
  * Page contains overview all current mappings.
  */
-(function() {
-
-    var root = typeof exports !== 'undefined' && exports !== null ? exports : window,
-        vimflowy = root.vimflowy,
-        $ = root.$,
-        // match the single word for capitalizing
-        rwords = /\w\S*/g;
+define([
+    'vimflowy',
+    'util/has',
+    'util/fetch',
+    'util/capitalize',
+    'mustache'
+], function(vimflowy, has, fetch, capitalize, Mustache) {
 
     /**
      * Create help page
@@ -19,8 +19,8 @@
 
         // compiled mustache template
         this.template = (function() {
-            var template = vimflowy.fetchFileContent('pages/help.html');
-            return root.Mustache.compile(template);
+            var template = fetch('pages/help.html');
+            return Mustache.compile(template);
         }());
     }
 
@@ -39,7 +39,7 @@
                 };
 
             for (var mode in availableCommands) {
-                if (availableCommands.hasOwnProperty(mode) &&
+                if (has(availableCommands, mode) &&
                     typeof availableCommands[mode] !== 'function') {
                     sections.push({
                         headline: generateHeadline(mode),
@@ -57,7 +57,7 @@
             $(helpHtml).appendTo('body');
 
             // bind close on close button click
-            $('.vimflowy-close').bind('click', toggleHelp);
+            $('.vimflowy-close').bind('click', help.toggle.bind(help));
         }
     };
 
@@ -69,7 +69,7 @@
             this.shown = false;
 
             // unbind attached handler before remove help page
-            $('.vimflowy-close').unbind('click', toggleHelp);
+            $('.vimflowy-close').unbind('click', help.toggle.bind(help));
 
             // remove help from page
             $('#vimflowy-help').remove();
@@ -107,30 +107,10 @@
         return rv;
     }
 
-    /**
-     * Capitalize each word from string.
-     *
-     * @param {String} s The string to capitalize
-     * @return {String} Capitalized string
-     */
-    function capitalize(s) {
-        return s.replace(rwords, function(s) {
-            return s.charAt(0).toUpperCase() + s.slice(1);
-        });
-    }
+    // Create a runtime help and related mappings
+    var help = new HelpPage;
 
-    // prepare help page
-    var helpPage = new HelpPage();
+    // Bind keys
+    vimflowy.map('?', function() { help.toggle(); }, 'normal', 'show help popup')
 
-    /**
-     * Toggle help dialog
-     */
-    function toggleHelp(e) {
-        e.preventDefault();
-        helpPage.toggle();
-    }
-
-    // map to normal mode
-    vimflowy.map('shift+/', toggleHelp, 'normal', 'toggle help dialog');
-
-}).call(this);
+})

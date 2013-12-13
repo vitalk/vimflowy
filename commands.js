@@ -1,21 +1,7 @@
 /**
  * Commands storage
  */
-(function() {
-    /**
-     * Command
-     *
-     * @param {Function} fn The command handler
-     * @param {String} desc The command description
-     */
-    function Command(fn, desc) {
-        if (!(this instanceof Command)) {
-            return new Command(fn, desc);
-        }
-        this.fn = fn;
-        this.desc = desc;
-    }
-
+define(['command'], function(Command) {
     /**
      * Commands storage.
      *
@@ -116,9 +102,6 @@
         return (obj instanceof Array) ? obj : [obj];
     }
 
-    var root = (typeof exports !== 'undefined' && exports !== null) ? exports : window;
+    return Commands;
 
-    root.Vimflowy.fn.Command = Command;
-    root.Vimflowy.fn.Commands = Commands;
-
-}).call(this);
+});
