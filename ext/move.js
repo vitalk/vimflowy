@@ -104,22 +104,22 @@ define([
     line: {
       // Moves current line up
       up: function(e) {
-        $(e.target).moveProjectUpOrDown('up');
+        $(e.target).getProject().moveProjectsUpOrDown('up');
       },
 
       // Moves current line down
       down: function(e) {
-        $(e.target).moveProjectUpOrDown('down');
+        $(e.target).getProject().moveProjectsUpOrDown('down');
       },
 
       // Add one more level to current line indentation
       right: function(e) {
-        $(e.target).indentProject();
+        $(e.target).getProject().indentProjects();
       },
 
       // Deindent current line
       left: function(e) {
-        $(e.target).outdentProject();
+        $(e.target).getProject().outdentProjects();
       }
     }
   };
