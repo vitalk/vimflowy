@@ -51,7 +51,6 @@
 #vimflowy-help.vimflowy {
     &-help {
         position: fixed;
-        top: 50px;
         max-height: 85%;
         padding: 8px 12px;
         overflow-y: auto;
@@ -66,6 +65,7 @@
         font-family: "Helvetica Neue", "Helvetica", "Arial", sans-serif;
 
         .center-block(640px);
+        .vertical-align-center();
     }
 }
 
@@ -153,6 +153,13 @@
     left: 50%;
     width: @width;
     margin-left: -@width/2;
+}
+
+// Vertical align block to center of the screen.
+.vertical-align-center() {
+    top: 50%;
+    transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
 }
 
 // clearfix
