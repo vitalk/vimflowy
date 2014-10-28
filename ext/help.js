@@ -59,6 +59,7 @@ define([
             // bind close on close button click
             $('.vimflowy-close').bind('click', help.toggle.bind(help));
         }
+        return false;
     };
 
     /**
@@ -74,6 +75,7 @@ define([
             // remove help from page
             $('#vimflowy-help').remove();
         }
+        return false;
     };
 
     /**
