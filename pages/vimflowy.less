@@ -71,10 +71,12 @@
 
 #vimflowy-help .vimflowy {
     &-header {
-        position: relative;
-        padding: .2em 0 .5em;
+        @x: 20px;
 
-        font-size: 20px;
+        position: relative;
+        padding: .2em 0 .5em unit(33px/@x, em);
+        font-size: @x;
+
         h1 {
             font-weight: normal;
         }
